@@ -87,7 +87,7 @@ var doRegister = function (req, res) {
         }
 
         var salt = crypto.randomBytes(128).toString('base64');
-        var hash = crypto.pbkdf2Sync(req.body.password, salt, 10000, 256).toString('base64');
+        var hash = crypto.pbkdf2Sync(req.body.password, salt, 10000, 256, "sha1").toString('base64');
 
         model.User.create([
             {
