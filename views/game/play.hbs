@@ -135,6 +135,15 @@
                 <!-- /ko -->
             </div>
         </div>
+
+        <!-- ko if: game().redrawHandEnabled && !isCzar() && blackCard() && move() && !playedCardsUncovered() -->
+        <div class="confirm">
+            <button class="btn-default"
+                    data-bind="enable: !move().confirmed() && player().canRedraw(), click: player().redraw">Redraw hand</button>
+            You have redrawn your hand <span data-bind="text: player().numberRedrawn()"></span> time<span data-bind="ifnot: player().numberRedrawn() == 1">s</span>.
+            A maximum of <span data-bind="text: game().redrawHandLimit"></span> redraw<!-- ko if: game().redrawHandLimit > 1 -->s are<!-- /ko --><!-- ko ifnot: game().redrawHandLimit > 1 --> is<!-- /ko --> allowed.
+        </div>
+        <!-- /ko -->
         <!-- /ko -->
 
         <!-- ko if: ended -->

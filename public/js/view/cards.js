@@ -90,13 +90,26 @@ var HandViewModel = function () {
     };
 };
 
-var PlayerViewModel = function (json) {
+var PlayerViewModel = function (game, json) {
+
+    let self = this;
 
     this.id = json.id;
     this.name = json.name;
 
     this.points = ko.observable(0);
     this.state = ko.observable();
+
+    this.numberRedrawn = ko.observable(0);
+    this.canRedraw = ko.computed(function () {
+        return game().redrawHandLimit < 0 || self.numberRedrawn() < game().redrawHandLimit;
+    });
+
+    this.redraw = function () {
+        if (confirm("Do you want to redraw your entire hand?")) {
+            self.numberRedrawn(self.numberRedrawn() + 1);
+        }
+    };
 };
 
 var PlayViewModel = function (game, player) {
@@ -111,16 +124,16 @@ var PlayViewModel = function (game, player) {
     this.chat().user(player);
     this.chat().gameId(game.id);
 
-    this.player = new PlayerViewModel(player);
+    this.player = ko.observable(new PlayerViewModel(this.game, player));
     this.hand = new HandViewModel();
     this.move = ko.observable();
 
     this.players = ko.observableArray();
     _.each(game.players, function (player) {
-        if (player.id == self.player.id) {
-            self.players.push(self.player);
+        if (player.id == self.player().id) {
+            self.players.push(self.player());
         } else {
-            self.players.push(new PlayerViewModel(player));
+            self.players.push(new PlayerViewModel(self.game, player));
         }
     });
 
@@ -168,11 +181,11 @@ var PlayViewModel = function (game, player) {
     };
 
     this.isHost = function () {
-        return self.game().host.id == self.player.id;
+        return self.game().host.id == self.player().id;
     };
 
     this.isCzar = ko.computed(function () {
-        return self.czar() && self.czar().id == self.player.id;
+        return self.czar() && self.czar().id == self.player().id;
     });
 
     this.czarCanSelect = ko.computed(function () {
@@ -267,7 +280,7 @@ var PlayViewModel = function (game, player) {
             case Game.Server.Update.PLAYER_JOIN:
                 console.log('Player joined: ' + data.name + '/' + data.id);
 
-                player = new PlayerViewModel(data);
+                player = new PlayerViewModel(self.game, data);
                 this.players.push(player);
 
                 player.state('Playing');
@@ -290,7 +303,7 @@ var PlayViewModel = function (game, player) {
                     break;
                 }
 
-                if (player == self.player) {
+                if (player == self.player()) {
                     interruptListen();
                     // TODO replace with fancy modal
                     alert('Kicked by host');
@@ -311,7 +324,7 @@ var PlayViewModel = function (game, player) {
 
                 this.players.remove(player);
 
-                if (this.players().length < 3 && player.id != this.player.id) {
+                if (this.players().length < 3 && player.id != this.player().id) {
                     // TODO replace with fancy modal
                     alert('Game returning to lobby because there are less than 3 players. :(');
                 }
@@ -348,7 +361,7 @@ var PlayViewModel = function (game, player) {
                     move.confirmed(true);
                     this.move(move);
 
-                    this.player.state('');
+                    this.player().state('');
                 }
 
                 break;
@@ -366,7 +379,7 @@ var PlayViewModel = function (game, player) {
                 console.log('Move made: ' + player.name);
                 player.state('');
 
-                if (player == this.player) {
+                if (player == this.player()) {
                     this.playedCards.push(this.move());
                 } else {
                     var pick = self.blackCard() != null ? self.blackCard().pick : 1; // can happen when joining in progress
