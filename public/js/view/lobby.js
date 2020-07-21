@@ -133,6 +133,7 @@ var GameLobbyViewModel = function (user) {
         g.playerLimit.subscribeChanged(update);
         g.password.subscribeChanged(update);
         g.roundTimeLimit.subscribeChanged(update);
+        g.redrawHandLimit.subscribeChanged(update);
         g.hidden.subscribeChanged(update);
     };
 

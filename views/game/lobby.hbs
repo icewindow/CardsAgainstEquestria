@@ -219,6 +219,33 @@
                     </div>
                 </div>
             </div>
+
+            <div>
+                <div class="col-md-offset-1 col-xs-5">
+                    <div class="form-group">
+                        <label for="redrawHandLimit" class="col-xs-3 control-label">
+                            Allowed hand redraws:
+                        </label>
+
+                        <div class="col-xs-9">
+                            <select id="redrawHandLimit" class="form-control"
+                                    data-bind="value: game().redrawHandLimit, enable: isHost">
+                                <option>0</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option value="-1">unlimited</option>
+                            </select>
+
+                            <span class="help-block">
+                                Set to 0 to disallow hand redraws
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <h2 data-target="#sets" data-bind="click: toggleArea, css: { 'has-error': game().sets().length == 0 }">

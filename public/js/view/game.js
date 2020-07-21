@@ -246,6 +246,7 @@ var GameViewModel = function () {
     this.scoreLimit = ko.observable(8);
     this.playerLimit = ko.observable(12);
     this.roundTimeLimit = ko.observable(60);
+    this.redrawHandLimit = ko.observable(1);
 
     this.password = ko.observable('');
     this.passworded = ko.observable(false);
@@ -351,6 +352,7 @@ var GameViewModel = function () {
 
         self.scoreLimit(json.scoreLimit);
         self.playerLimit(json.playerLimit);
+        self.redrawHandLimit(json.redrawHandLimit);
 
         self.password(json.password);
         self.passworded(json.passworded);
