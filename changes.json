@@ -1,5 +1,13 @@
 [
   {
+    "date": "Jul 22, 2020",
+    "version": "1.1",
+    "changes": [
+      "Added ability for players to discard their entire hand and draw a new set of cards",
+      "Added support for MySQL backend"
+    ]
+  },
+  {
     "date": "Jun 25, 2016",
     "version": "1.0.11",
     "changes": [
