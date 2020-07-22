@@ -302,6 +302,25 @@ var select = function (req, res) {
 
 /**
  * POST
+ * Request a new hand
+ */
+let redraw = function(req, res) {
+    let gameInstance = findGame(req.params.game);
+    if (!gameInstance) {
+        res.send(404);
+        return;
+    }
+    let user = users.get(req.session.user.id);
+    if (!isPlayer(user, gameInstance)) {
+        res.send(403);
+        return;
+    }
+    gameInstance.redrawPlayerHand(user);
+    res.send(200);
+};
+
+/**
+ * POST
  * Requests the full state of this game for the current player.
  */
 var state = function (req, res) {
@@ -702,6 +721,7 @@ module.exports = function (app, appConfig, gameModule) {
 
     app.get('/ajax/game/:game/listen', listen);
     app.post('/ajax/game/:game/state', state);
+    app.post("/ajax/game/:game/redraw", redraw);
 
     app.post('/ajax/game/:game/move', move);
     app.post('/ajax/game/:game/select', select);

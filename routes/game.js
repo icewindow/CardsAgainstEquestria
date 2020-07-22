@@ -107,7 +107,8 @@ var play = function (req, res) {
     res.render('game/play', {
         title: gameInstance.name,
         userJson: JSON.stringify(user.toJson()),
-        gameJson: JSON.stringify(gameInstance.toJsonFormat()), game: gameInstance
+        gameJson: JSON.stringify(gameInstance.toJsonFormat()),
+        game: gameInstance
     });
 };
 

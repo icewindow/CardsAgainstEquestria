@@ -107,7 +107,10 @@ var PlayerViewModel = function (game, json) {
 
     this.redraw = function () {
         if (confirm("Do you want to redraw your entire hand?")) {
-            self.numberRedrawn(self.numberRedrawn() + 1);
+            $.ajax({
+                url: `/ajax/game/${model.game().id}/redraw`,
+                method: "post"
+            });
         }
     };
 };
@@ -364,6 +367,8 @@ var PlayViewModel = function (game, player) {
                     this.player().state('');
                 }
 
+                this.player().numberRedrawn(data.handsRedrawn);
+
                 break;
 
             case Game.Server.Update.MOVE:
@@ -468,6 +473,7 @@ var PlayViewModel = function (game, player) {
                 _.each(this.players(), function (player) {
                     player.state('Playing');
                     player.points(data.points[player.id]);
+                    player.numberRedrawn(data.redraws[player.id]);
                 });
                 this.czar().state('Card Czar');
 
