@@ -1,6 +1,14 @@
 [
   {
     "date": "Jul 24, 2020",
+    "version": "1.1.2",
+    "changes": [
+      "Removed redraw limit text if redraw limit is set to unlimited",
+      "Fixed redraw not working if redraw limit is set to unlimited"
+    ]
+  },
+  {
+    "date": "Jul 24, 2020",
     "version": "1.1.1",
     "changes": [
       "Fixed permissions not loading properly"
