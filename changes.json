@@ -1,5 +1,12 @@
 [
   {
+    "date": "Oct 13, 2020",
+    "version": "1.1.3",
+    "changes": [
+      "Fixed redraw count not being reset when game starts"
+    ]
+  },
+  {
     "date": "Jul 24, 2020",
     "version": "1.1.2",
     "changes": [
